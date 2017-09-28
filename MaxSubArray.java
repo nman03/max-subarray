@@ -2,8 +2,8 @@ import java.util.Arrays;
 
 public class MaxSubArray  {
 	static MaxSubArray msa = new MaxSubArray();
-	
-	// Problem 1
+
+	// O(n^2)
 	public static MaxArray bruteForce(int[] array) {
 		int low = 0;
 		int high = 0;
@@ -21,14 +21,14 @@ public class MaxSubArray  {
 				}
 			}
 		}
-	
+
 		MaxArray ma = msa.new MaxArray(low, high, sum);
 		return ma;	
 	}
 
-	// Problem 2
+	// O(nlogn)
 	public static MaxArray findMaxCrossArray(int[] arr, int low, int mid, int high) {
-		
+
 		// Get Maximum Left sum and index
 		int leftSum = arr[mid];
 		int leftTemp = 0;
@@ -69,7 +69,7 @@ public class MaxSubArray  {
 			MaxArray leftSide = findMaxArray(arr, low, mid); // case 1: low and high on the left-half
 			MaxArray rightSide = findMaxArray(arr, mid + 1, high); // case 2: low and high on the right-half
 			MaxArray across = findMaxCrossArray(arr, low, mid, high); // case 3: low on left, high on right
-			
+
 			if (leftSide.sum >= rightSide.sum && leftSide.sum >= across.sum) {
 				return leftSide;
 			} else if (rightSide.sum >= leftSide.sum && rightSide.sum >= across.sum) {
@@ -79,7 +79,7 @@ public class MaxSubArray  {
 			}
 		}
 	}
-	
+
 	class MaxArray {
 		int lowIndex;
 		int highIndex;
@@ -92,14 +92,32 @@ public class MaxSubArray  {
 		}
 	}
 
+	// O(n)
+	public static int linearMaxSubArray(int[] array) {
+		int max = Integer.MIN_VALUE; 
+		int tempMax = 0;
+
+		for (int i = 0; i < array.length; i++) {
+			tempMax = tempMax + array[i];
+			if (max < tempMax)
+				max = tempMax;
+			if (tempMax < 0)
+				tempMax = 0;
+		}
+		return max;
+	}
+
+
 	public static void main(String[] args) {
 		int[] array = {13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7};
-		
+
 		System.out.println("Array: "+ Arrays.toString(array));
-		
+
 		MaxArray bruteForceResult = bruteForce(array);
 		System.out.printf("Brute-Force: The maximum subarray has low index: %d, high index: %d, and max sum: %d",bruteForceResult.lowIndex, bruteForceResult.highIndex, bruteForceResult.sum);
 		MaxArray divideAndConquerResult = findMaxArray(array, 0, array.length - 1);
 		System.out.printf("\nDivide-and-Conquer: The maximum subarray has low index: %d, high index: %d, and max sum: %d", divideAndConquerResult.lowIndex, divideAndConquerResult.highIndex, divideAndConquerResult.sum);
+		
+		System.out.printf("\nLinear-Solution: The maximum subarray has max sum: %d", linearMaxSubArray(array));
 	}
 }
