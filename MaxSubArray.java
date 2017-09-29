@@ -94,7 +94,7 @@ public class MaxSubArray  {
 
 	// O(n)
 	public static int linearMaxSubArray(int[] array) {
-		int max = Integer.MIN_VALUE; 
+		int max = array[0]; 
 		int tempMax = 0;
 
 		for (int i = 0; i < array.length; i++) {
@@ -115,6 +115,7 @@ public class MaxSubArray  {
 
 		MaxArray bruteForceResult = bruteForce(array);
 		System.out.printf("Brute-Force: The maximum subarray has low index: %d, high index: %d, and max sum: %d",bruteForceResult.lowIndex, bruteForceResult.highIndex, bruteForceResult.sum);
+		
 		MaxArray divideAndConquerResult = findMaxArray(array, 0, array.length - 1);
 		System.out.printf("\nDivide-and-Conquer: The maximum subarray has low index: %d, high index: %d, and max sum: %d", divideAndConquerResult.lowIndex, divideAndConquerResult.highIndex, divideAndConquerResult.sum);
 		
